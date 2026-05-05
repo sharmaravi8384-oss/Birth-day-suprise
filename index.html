@@ -2,14 +2,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Secret Mission 🎯</title>
+  <title>Secret Access 🎯</title>
   <style>
     body {
       margin:0;
-      font-family: Arial;
       text-align:center;
+      font-family: Arial;
       background: linear-gradient(135deg, #ff6ec4, #7873f5);
       color:white;
+      overflow:hidden;
     }
 
     .box { margin-top:100px; }
@@ -19,91 +20,85 @@
       margin:10px;
       border:none;
       border-radius:10px;
-      font-size:16px;
       cursor:pointer;
     }
 
-    #noBtn {
-      position:absolute;
-    }
+    #noBtn { position:absolute; }
 
-    img {
-      width:200px;
-      border-radius:15px;
-      margin-top:20px;
-    }
+    h1 { font-size:40px; }
   </style>
 </head>
 
 <body>
 
-<!-- LEVEL 1 -->
 <div id="level1" class="box">
-  <h2>🔐 Enter Secret Code</h2>
-  <input id="code">
+  <h2>🔐 Generating Secret Code...</h2>
+  <h1 id="genCode"></h1>
+  <input id="userCode" placeholder="Enter code">
   <br>
-  <button onclick="checkCode()">Enter</button>
+  <button onclick="check()">Enter</button>
 </div>
 
-<!-- LEVEL 2 -->
 <div id="level2" class="box" style="display:none;">
-  <h2>😏 Are you awesome?</h2>
-  <button onclick="nextLevel()">YES 😎</button>
-  <button id="noBtn" onmouseover="moveNo()">NO 😜</button>
+  <h2 id="funText"></h2>
+  <button onclick="next()">YES 😎</button>
+  <button id="noBtn" onmouseover="move()">NO 😜</button>
 </div>
 
-<!-- LEVEL 3 -->
-<div id="level3" class="box" style="display:none;">
-  <h2>🎯 One more question</h2>
-  <p>Do you deserve a surprise?</p>
-  <button onclick="nextLevel2()">YES 🎉</button>
-  <button id="noBtn2" onmouseover="moveNo2()">NO 😈</button>
-</div>
-
-<!-- FINAL -->
 <div id="final" class="box" style="display:none;">
-  <h1>🎂 HAPPY BIRTHDAY 🎉</h1>
-  <p>Gotcha 😜</p>
-  <p>This was your surprise!</p>
-
-  <img src="https://via.placeholder.com/200">
+  <h1>🎉 SURPRISE 🎉</h1>
+  <h2 id="finalText"></h2>
 </div>
 
 <script>
 
-/* Password */
-function checkCode(){
-  let code=document.getElementById("code").value.toLowerCase();
-  if(code==="123"){  // simple universal code
-    show("level1","level2");
+/* Random Code */
+let code = Math.floor(1000 + Math.random()*9000);
+document.getElementById("genCode").innerText = code;
+
+/* Funny texts */
+let texts = [
+  "Are you smart? 😏",
+  "Do you deserve cake? 🎂",
+  "Are you the main character? 😎",
+  "Are you broke or rich? 😂"
+];
+
+let finalTexts = [
+  "Happy Birthday Legend 🎂",
+  "You survived the test 😎",
+  "You are officially old now 😂",
+  "Cake incoming 🎉"
+];
+
+/* Check */
+function check(){
+  let val = document.getElementById("userCode").value;
+  if(val == code){
+    document.getElementById("level1").style.display="none";
+    document.getElementById("level2").style.display="block";
+    randomText();
   } else alert("Wrong code 😜");
 }
 
-function nextLevel(){
-  show("level2","level3");
+/* Random question */
+function randomText(){
+  let t = texts[Math.floor(Math.random()*texts.length)];
+  document.getElementById("funText").innerText = t;
 }
 
-function nextLevel2(){
-  show("level3","final");
-}
-
-/* Show function */
-function show(hide,show){
-  document.getElementById(hide).style.display="none";
-  document.getElementById(show).style.display="block";
+function next(){
+  document.getElementById("level2").style.display="none";
+  document.getElementById("final").style.display="block";
+  let t = finalTexts[Math.floor(Math.random()*finalTexts.length)];
+  document.getElementById("finalText").innerText = t;
 }
 
 /* Moving NO button */
-function moveNo(){
-  let btn=document.getElementById("noBtn");
-  btn.style.top=Math.random()*80+"%";
-  btn.style.left=Math.random()*80+"%";
-}
-
-function moveNo2(){
-  let btn=document.getElementById("noBtn2");
-  btn.style.top=Math.random()*80+"%";
-  btn.style.left=Math.random()*80+"%";
+function move(){
+  let btn = document.getElementById("noBtn");
+  btn.style.top = Math.random()*80+"%";
+  btn.style.left = Math.random()*80+"%";
 }
 
 </script>
